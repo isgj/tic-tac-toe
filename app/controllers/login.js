@@ -42,7 +42,13 @@ export default Controller.extend({
       }).then(data => {
         if (data.jwt) {
           this.get('session').login(data.jwt);
-          this.transitionToRoute('games');
+          const prevTransition = this.get('previousTransition');
+          if (prevTransition) {
+            this.set('previousTransition', null);
+            prevTransition.retry();
+          } else {
+            this.transitionToRoute('games');
+          }
         }
         if (data.errors) return Promise.reject(data);
       }).catch((reason) => {
