@@ -1,1 +1,18 @@
-Show game info
+<div class="mdl-cell mdl-cell--12-col">
+  <h2>Welcome to the game number {{this.gameState.id}}</h2>
+</div>
+<div class="mdl-cel mdl-cell--6-col flex flex-col results">
+  {{#if this.gameFinished}}
+    <p>Game status: <span>Finished</span></p>
+    <p>Winner: <span>{{this.winner}}</span></p>
+  {{else}}
+    <p>Game status: <span>{{game-action this.gameState this.me}}</span></p>
+  {{/if}}
+</div>
+<div class="mdl-cell mdl-cell--6-col flex flex-center">
+  <div class="tic-tac-toe">
+    {{#each this.gameSpots as |spot index|}}
+      <div {{action play index}}></div>
+    {{/each}}
+  </div>
+</div>
