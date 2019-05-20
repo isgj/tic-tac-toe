@@ -1,0 +1,59 @@
+{{#each this.errors as |error|}}
+  <p class="error">{{error}}</p>
+{{/each}}
+<div class="mdl-cell mdl-cell--12-col">
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" disabled={{this.loading}}
+    {{action newGame}}>
+    Create a new Game
+  </button>
+</div>
+<div class="mdl-cell mdl-cell--12-col">
+  <h2>Games you participate ({{this.myGames.length}})</h2>
+  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric">Game ID</th>
+        <th>Host</th>
+        <th>Guest</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.myGames as |game|}}
+        <tr {{action goTo game}}>
+          <td class="mdl-data-table__cell--non-numeric">{{game.id}}</td>
+          <td>{{game.host.email}}</td>
+          <td>{{game-guest game}}</td>
+          <td>{{game-action game this.me}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="mdl-cell mdl-cell--12-col">
+  <h2>New Games ({{this.newGames.length}})</h2>
+  <table class="mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp">
+    <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric">Game ID</th>
+        <th>Host</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each this.newGames as |game|}}
+        <tr>
+          <td class="mdl-data-table__cell--non-numeric">{{game.id}}</td>
+          <td>{{game.host.email}}</td>
+          <td>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" {{action partecipate game}}
+              disabled={{this.loading}}>
+              Partecipate
+            </button>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
