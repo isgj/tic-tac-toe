@@ -1,18 +1,16 @@
 <div class="mdl-cell mdl-cell--12-col">
-  <h2>Welcome to the game number {{this.gameState.id}}</h2>
+  <h2>Welcome to the game number {{model.id}}</h2>
 </div>
-<div class="mdl-cel mdl-cell--6-col flex flex-col results">
-  {{#if this.gameFinished}}
-    <p>Game status: <span>Finished</span></p>
-    <p>Winner: <span>{{this.winner}}</span></p>
-  {{else}}
-    <p>Game status: <span>{{game-action this.gameState this.me}}</span></p>
-  {{/if}}
-</div>
-<div class="mdl-cell mdl-cell--6-col flex flex-center">
+<div class="mdl-cell mdl-cell--8-col flex flex-center">
   <div class="tic-tac-toe">
     {{#each this.gameSpots as |spot index|}}
-      <div {{action play index}}></div>
+      <div {{action play index}}>{{spot}}</div>
     {{/each}}
   </div>
+</div>
+<GameResult @game={{model}} />
+<div class="mdl-cell mdl-cell--8-col flex flex-center">
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" {{action updateGame}}>
+    Update game status
+  </button>
 </div>

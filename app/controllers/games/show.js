@@ -10,22 +10,47 @@ export default Controller.extend({
   me: computed('session.user', function () {
     return this.get('session').user;
   }),
-  gameState: computed('model', 'game', function () {
-    if (this.get('game')) return this.get('game');
-    return this.get('model');
+  gameSpots: computed('model', function () {
+    return this.get('model').state.split(',');
   }),
-  gameSpots: computed('gameState', function () {
-    return this.get('gameState').state.split(',');
-  }),
-  gameFinished: computed('gameState', function () {
-    return this.get('gameState').winner;
+  gameFinished: computed('model', function () {
+    return this.get('model').winner;
   }),
   play(index) {
-    const { me, gameState, gameSpots, loading } = this.getProperties('me', 'gameState', 'gameSpots', 'loading');
-    if (loading || me.sub !== gameState.next_player || gameSpots[index] !== '-') return;
+    const { me, model, gameSpots, loading } = this.getProperties('me', 'model', 'gameSpots', 'loading');
+    if (loading || me.sub != model.next_player || gameSpots[index] !== '-' || model.finished) return;
     this.toggleProperty('loading');
-    fetch(`${ENV.host}/api/v1/games/${gameState.id}?spot=${index}`, {
+    fetch(`${ENV.host}/api/v1/games/${model.id}?spot=${index}`, {
       method: 'PATCH',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.get('session').token}`
+      },
+    }).then(resp => {
+      this.toggleProperty('loading')
+      switch (resp.status) {
+        case 401:
+          this.transitionToRoute('login');
+          break;
+        case 404:
+          this.set('errors', ['Game not avaible']);
+          break;
+        case 500:
+          this.set('errors', ['Server error']);
+          break;
+        case 422:
+          this.set('errors', ['Bad data was sent']);
+          break;
+        default:
+          return resp.json();
+      }
+    }).then(data => {
+      this.set('model', data.game);
+    });
+  },
+  updateGame() {
+    fetch(`${ENV.host}/api/v1/games/${this.model.id}`, {
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
@@ -46,7 +71,7 @@ export default Controller.extend({
           return resp.json();
       }
     }).then(data => {
-      this.set('game', data.game);
+      this.set('model', data.game)
     })
   }
 });
