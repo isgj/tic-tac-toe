@@ -36,6 +36,7 @@ export default Controller.extend({
         'Authorization': `Bearer ${this.get('session').token}`
       }
     }).then(resp => {
+      const me = this.get('me');
       switch (resp.status) {
         case 401:
           this.transitionToRoute('login');
@@ -47,13 +48,15 @@ export default Controller.extend({
           this.set('errors', ['Server error']);
           break;
         default:
+          game.set('guest', me);
+          game.set('next_player', me.sub);
           this.transitionToRoute('games.show', game.id);
       }
     }).catch(error => this.set('errors', error));
     this.toggleProperty('loading');
   },
   goTo(game) {
-    this.transitionToRoute('games.show', game.id);
+    this.transitionToRoute('games.show', game);
   },
   newGame() {
     this.toggleProperty('loading');

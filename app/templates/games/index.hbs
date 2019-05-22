@@ -20,7 +20,7 @@
     </thead>
     <tbody>
       {{#each this.myGames as |game|}}
-        <tr {{action goTo game}}>
+        <tr {{action goTo game.id}}>
           <td class="mdl-data-table__cell--non-numeric">{{game.id}}</td>
           <td>{{game.host.email}}</td>
           <td>{{game-guest game}}</td>

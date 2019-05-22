@@ -1,1 +1,19 @@
-Show game info
+<div class="mdl-cell mdl-cell--12-col">
+  <h2>Welcome to the game number {{model.id}}</h2>
+</div>
+<div class="mdl-cell mdl-cell--8-col flex flex-center">
+  <div class="tic-tac-toe">
+    {{#each this.gameSpots as |spot index|}}
+      <div {{action play index}}>{{spot}}</div>
+    {{/each}}
+  </div>
+</div>
+<section class="game-results mdl-cel mdl-cell--4-col flex flex-col">
+  <GameResult @game={{model}} />
+</section>
+<div class="mdl-cell mdl-cell--8-col flex flex-center">
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" {{action updateGame}}
+    disabled={{model.finished}}>
+    Update game status
+  </button>
+</div>
