@@ -1,3 +1,23 @@
-<div class="mdl-grid">
-  {{outlet}}
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+  {{#if this.logged}}
+    <header class="mdl-layout__header mdl-layout__header--scroll">
+      <div class="mdl-layout__header-row">
+        <!-- Title -->
+        <span class="mdl-layout-title">TicTacToe</span>
+        <!-- Add spacer, to align navigation to the right -->
+        <div class="mdl-layout-spacer"></div>
+        <!-- Navigation -->
+        <nav class="mdl-navigation">
+          {{#link-to "games" class="mdl-navigation__link"}}Games{{/link-to}}
+          <span class="mdl-navigation__link pointer" {{action "logOut"}}>Sign out</span>
+        </nav>
+      </div>
+    </header>
+  {{/if}}
+  <main class="mdl-layout__content">
+    <div class="page-content">
+      {{outlet}}
+    </div>
+  </main>
+
 </div>

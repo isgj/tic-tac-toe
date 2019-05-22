@@ -22,13 +22,23 @@
   padding-bottom: 0.5rem;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .error {
   color: red;
+  text-align: center;
 }
 
 .tic-tac-toe {
   display: grid;
   grid-template-columns: min-content min-content min-content;
+}
+
+.form-link {
+  margin: 0.8rem;
+  font-size: 1.2rem;
 }
 
 .tic-tac-toe div {
