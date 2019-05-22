@@ -49,7 +49,7 @@ export default Controller.extend({
           break;
         default:
           game.set('guest', me);
-          game.set('next_player', me.sub)
+          game.set('next_player', me.sub);
           this.transitionToRoute('games.show', game.id);
       }
     }).catch(error => this.set('errors', error));

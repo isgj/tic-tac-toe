@@ -8,9 +8,12 @@
     {{/each}}
   </div>
 </div>
-<GameResult @game={{model}} />
+<section class="game-results mdl-cel mdl-cell--4-col flex flex-col">
+  <GameResult @game={{model}} />
+</section>
 <div class="mdl-cell mdl-cell--8-col flex flex-center">
-  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" {{action updateGame}}>
+  <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent" {{action updateGame}}
+    disabled={{model.finished}}>
     Update game status
   </button>
 </div>

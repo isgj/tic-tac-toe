@@ -1,19 +1,23 @@
-<div class="mdl-cel mdl-cell--6-col flex flex-col results">
+<div class="results">
   {{#if this.game.finished}}
     <p>Game status: <span>Finished</span></p>
     <p>Result: <span>{{this.result}}</span></p>
   {{else}}
-    <p>Game status: <span>{{game-action this.game 1}}</span></p>
+    <p>Game status: <span>{{game-action this.game this.session.user}}</span></p>
   {{/if}}
-  <div class="full-row flex align-center space-between">
-    Players:
+  <div class="full-row flex align-center space-around">
+    <span>
+      Players:
+    </span>
     <span class="mdl-chip mdl-chip--contact">
       <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">O</span>
       <span class="mdl-chip__text">{{this.host}}</span>
     </span>
-    <span class="mdl-chip mdl-chip--contact">
-      <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">X</span>
-      <span class="mdl-chip__text">{{this.guest}}</span>
-    </span>
+    {{#if this.game.guest}}
+      <span class="mdl-chip mdl-chip--contact">
+        <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">X</span>
+        <span class="mdl-chip__text">{{this.guest}}</span>
+      </span>
+    {{/if}}
   </div>
 </div>

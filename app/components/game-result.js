@@ -8,7 +8,7 @@ export default Component.extend({
     if (!this.game.winner) return 'Tie';
     const player = this.game.winner === this.game.host.id ? this.game.host : this.game.guest;
     if (this.get('session.user').sub == player.id) return 'You won';
-    return player.email;
+    return `${player.email} won`;
   }),
   host: computed(function () {
     if (this.get('session.user').sub == this.game.host.id) return 'You';

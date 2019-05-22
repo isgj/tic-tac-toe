@@ -1,6 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { throttle } from '@ember/runloop';
 import ENV from 'tic-tac-toe/config/environment';
 
 export default Controller.extend({
@@ -50,6 +51,9 @@ export default Controller.extend({
     });
   },
   updateGame() {
+    throttle(this, this.update, 1500)
+  },
+  update() {
     fetch(`${ENV.host}/api/v1/games/${this.model.id}`, {
       cache: 'no-cache',
       headers: {
