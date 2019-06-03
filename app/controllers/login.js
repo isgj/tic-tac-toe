@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import ENV from 'tic-tac-toe/config/environment';
 
 export default Controller.extend({
   email: '',
@@ -21,48 +20,13 @@ export default Controller.extend({
         return;
       }
       this.set('login', true);
-      const body = {
-        auth: {
-          email: this.get('email'),
-          password: this.get('password')
-        }
-      };
-      fetch(`${ENV.host}/auth/login`, {
-        method: 'POST',
-        cache: 'no-cache',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(body)
-      }).then((resp) => {
-        if (resp.status === 404)
-          return this.set('errors', ['Invalid email or password']);
-        else
-          return resp.json();
-      }).then(data => {
-        if (data.jwt) {
-          this.get('session').login(data.jwt);
-          const prevTransition = this.get('previousTransition');
-          if (prevTransition) {
-            this.set('previousTransition', null);
-            prevTransition.retry();
-          } else {
-            this.transitionToRoute('games');
-          }
-        }
-        if (data.errors) return Promise.reject(data);
-      }).catch((reason) => {
-        let errors = [];
-        if (reason.errors && reason.errors.email) {
-          errors = [...reason.errors.email.map(e => `Email: ${e}`)];
-        }
-        if (reason.errors && reason.errors.password) {
-          errors = [...errors, ...reason.errors.password.map(e => `Password: ${e}`)];
-        }
-        if (errors.length) this.set('errors', errors);
-        else this.set('errors', ['Error from the server']);
-        this.toggleProperty('login');
-      })
+      const email = this.get('email');
+      const password = this.get('password');
+      this.get('session').authenticate('authenticator:token', email, password)
+        .catch((reason) => {
+          this.set('errors', reason.error || reason);
+          this.set('login', false);
+        });
     }
   }
 });

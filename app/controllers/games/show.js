@@ -8,9 +8,7 @@ export default Controller.extend({
   game: null,
   session: service(),
   loading: false,
-  me: computed('session.user', function () {
-    return this.get('session').user;
-  }),
+  me: service(),
   gameSpots: computed('model', function () {
     return this.get('model').state.split(',');
   }),
@@ -19,14 +17,14 @@ export default Controller.extend({
   }),
   play(index) {
     const { me, model, gameSpots, loading } = this.getProperties('me', 'model', 'gameSpots', 'loading');
-    if (loading || me.sub != model.next_player || gameSpots[index] !== '-' || model.finished) return;
+    if (loading || me.data.sub != model.next_player || gameSpots[index] !== '-' || model.finished) return;
     this.toggleProperty('loading');
     fetch(`${ENV.host}/api/v1/games/${model.id}?spot=${index}`, {
       method: 'PATCH',
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.get('session').token}`
+        'Authorization': `Bearer ${this.get('session.data.authenticated.token')}`
       },
     }).then(resp => {
       this.toggleProperty('loading')
@@ -58,7 +56,7 @@ export default Controller.extend({
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.get('session').token}`
+        'Authorization': `Bearer ${this.get('session.data.authenticated.token')}`
       },
     }).then(resp => {
       switch (resp.status) {

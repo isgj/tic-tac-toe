@@ -3,7 +3,7 @@
     <p>Game status: <span>Finished</span></p>
     <p>Result: <span>{{this.result}}</span></p>
   {{else}}
-    <p>Game status: <span>{{game-action this.game this.session.user}}</span></p>
+    <p>Game status: <span>{{game-action this.game me.data}}</span></p>
   {{/if}}
   <div class="full-row flex align-center space-around">
     <span>

@@ -7,7 +7,7 @@
       {{#each errors as |error|}}
         <p class="error">{{error}}</p>
       {{/each}}
-      <form {{action "login"}} class="flex flex-col align-center pb-2">
+      <form {{action "login" on="submit"}} class="flex flex-col align-center pb-2">
         {{mdl-textfield label="Email" value=email type="email" errorMessage="Insert a valid email"}}
         {{mdl-textfield label="Password" value=password type="password" pattern=".{6}.*" errorMessage="Password must be at least 6 characters long"}}
         {{mdl-button isRaised=true text="Login" disabled=submiting type="submit"}}
