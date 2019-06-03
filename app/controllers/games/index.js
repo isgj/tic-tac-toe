@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import ENV from 'tic-tac-toe/config/environment';
 
 export default Controller.extend({
   session: service(),
@@ -25,33 +24,14 @@ export default Controller.extend({
       })
     }),
   partecipate(game) {
-    this.toggleProperty('loading');
-    fetch(`${ENV.host}/api/v1/games/${game.id}/partecipate`, {
-      method: 'PATCH',
-      cache: 'no-cache',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.get('session.data.authenticated.token')}`
-      }
-    }).then(resp => {
-      const me = this.get('me.data');
-      switch (resp.status) {
-        case 401:
-          this.transitionToRoute('login');
-          break;
-        case 404:
-          this.set('errors', ['Game not avaible']);
-          break;
-        case 500:
-          this.set('errors', ['Server error']);
-          break;
-        default:
-          game.set('guest', me);
-          game.set('next_player', me.sub);
-          this.transitionToRoute('games.show', game.id);
-      }
-    }).catch(error => this.set('errors', error));
-    this.toggleProperty('loading');
+    const gameModel = this.store.peekRecord('game', game.id)
+    gameModel.save()
+      .then((game) => {
+        this.transitionToRoute('games.show', game.id);
+      })
+      .catch(error => {
+        this.set('errors', error)
+      })
   },
   goTo(game) {
     this.transitionToRoute('games.show', game);
