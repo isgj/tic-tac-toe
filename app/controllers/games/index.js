@@ -7,13 +7,11 @@ export default Controller.extend({
   session: service(),
   loading: false,
   errors: null,
-  me: computed('session.user', function () {
-    return this.get('session').user;
-  }),
+  me: service(),
   myGames: computed('model', 'loading',
     function () {
       const models = this.get('model');
-      const me = this.get('me');
+      const me = this.get('me.data');
       return models.filter(game => {
         return game.host.id === me.sub || (game.guest && game.guest.id === me.sub);
       })
@@ -21,7 +19,7 @@ export default Controller.extend({
   newGames: computed('model',
     function () {
       const models = this.get('model');
-      const me = this.get('me');
+      const me = this.get('me.data');
       return models.filter(game => {
         return game.host.id !== me.sub && !game.guest;
       })
@@ -33,10 +31,10 @@ export default Controller.extend({
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${this.get('session').token}`
+        'Authorization': `Bearer ${this.get('session.data.authenticated.token')}`
       }
     }).then(resp => {
-      const me = this.get('me');
+      const me = this.get('me.data');
       switch (resp.status) {
         case 401:
           this.transitionToRoute('login');
@@ -60,13 +58,10 @@ export default Controller.extend({
   },
   newGame() {
     this.toggleProperty('loading');
-    const me = this.get('me');
+    const me = this.get('me.data');
     const game = this.store.createRecord('game', { host: me });
     game.save().then(resp => {
       switch (resp.status) {
-        case 401:
-          this.transitionToRoute('login');
-          break;
         case 500:
           this.set('errors', ['Server error']);
           break;

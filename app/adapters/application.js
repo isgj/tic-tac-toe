@@ -9,7 +9,7 @@ export default DS.RESTAdapter.extend({
   session: service(),
   headers: computed(function () {
     return {
-      'Authorization': `Bearer ${this.get('session.token')}`
+      'Authorization': `Bearer ${this.get('session.data.authenticated.token')}`
     }
   })
 });

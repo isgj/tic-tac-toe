@@ -9,8 +9,7 @@ export default Controller.extend({
   }),
   actions: {
     logOut() {
-      this.get('session').logout();
-      this.transitionToRoute('login');
+      this.get('session').invalidate();
     }
   }
 });
