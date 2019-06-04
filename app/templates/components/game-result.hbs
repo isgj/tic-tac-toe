@@ -1,9 +1,9 @@
 <div class="results">
-  {{#if this.game.finished}}
+  {{#if game.finished}}
     <p>Game status: <span>Finished</span></p>
-    <p>Result: <span>{{this.result}}</span></p>
+    <p>Result: <span>{{result}}</span></p>
   {{else}}
-    <p>Game status: <span>{{game-action this.game me.data}}</span></p>
+    <p>Game status: <span>{{game-action game.host game.guest game.next_player me.data}}</span></p>
   {{/if}}
   <div class="full-row flex align-center space-around">
     <span>
@@ -11,12 +11,12 @@
     </span>
     <span class="mdl-chip mdl-chip--contact">
       <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">O</span>
-      <span class="mdl-chip__text">{{this.host}}</span>
+      <span class="mdl-chip__text">{{host}}</span>
     </span>
-    {{#if this.game.guest}}
+    {{#if game.guest}}
       <span class="mdl-chip mdl-chip--contact">
         <span class="mdl-chip__contact mdl-color--teal mdl-color-text--white">X</span>
-        <span class="mdl-chip__text">{{this.guest}}</span>
+        <span class="mdl-chip__text">{{guest}}</span>
       </span>
     {{/if}}
   </div>
