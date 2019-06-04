@@ -2,7 +2,7 @@
 <div class="mdl-grid">
   <div class="mdl-cell mdl-cell--8-col flex flex-center">
     <div class="tic-tac-toe">
-      {{#each this.gameSpots as |spot index|}}
+      {{#each gameSpots as |spot index|}}
         <div {{action play index}}>{{spot}}</div>
       {{/each}}
     </div>

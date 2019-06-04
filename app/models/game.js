@@ -7,5 +7,6 @@ export default Model.extend({
   next_player: DS.attr('number'),
   finished: DS.attr('boolean'),
   host: DS.attr(),
-  guest: DS.attr()
+  guest: DS.attr(),
+  spot: DS.attr()
 });
