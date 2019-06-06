@@ -7,7 +7,7 @@ export default Controller.extend({
   loading: false,
   errors: null,
   me: service(),
-  myGames: computed('model', 'loading',
+  myGames: computed('model',
     function () {
       const models = this.get('model');
       const me = this.get('me.data');

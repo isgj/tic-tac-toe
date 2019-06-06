@@ -1,5 +1,4 @@
 import { Promise } from 'rsvp';
-import { computed } from '@ember/object';
 import BaseAuthenticator from 'ember-simple-auth/authenticators/base';
 import ENV from 'tic-tac-toe/config/environment';
 

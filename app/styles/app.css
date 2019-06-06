@@ -41,10 +41,11 @@
   font-size: 1.2rem;
 }
 
-.tic-tac-toe div {
+.tic-tac-toe button {
   padding: 1rem;
   font-size: 3rem;
   min-width: 50px;
+  width: 100px;
   min-height: 50px;
   display: flex;
   justify-content: center;

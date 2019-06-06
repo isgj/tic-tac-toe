@@ -3,7 +3,7 @@
   <div class="mdl-cell mdl-cell--8-col flex flex-center">
     <div class="tic-tac-toe">
       {{#each gameSpots as |spot index|}}
-        <div {{action play index}}>{{spot}}</div>
+        <button {{action play index}}>{{spot}}</button>
       {{/each}}
     </div>
   </div>
