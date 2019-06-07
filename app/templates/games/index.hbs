@@ -20,8 +20,12 @@
     </thead>
     <tbody>
       {{#each this.myGames as |game|}}
-        <tr {{action goTo game.id}}>
-          <td class="mdl-data-table__cell--non-numeric">{{game.id}}</td>
+        <tr class="pointer">
+          <td class="mdl-data-table__cell--non-numeric">
+            {{#link-to "games.show" game.id}}
+              Game: {{game.id}}
+            {{/link-to}}
+          </td>
           <td>{{game.host.email}}</td>
           <td>{{game-guest game}}</td>
           <td>{{game-action game.host game.guest game.next_player me.data}}</td>

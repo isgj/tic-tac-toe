@@ -4,13 +4,9 @@ import { inject as service } from '@ember/service';
 import { throttle } from '@ember/runloop';
 
 export default Controller.extend({
-  session: service(),
   me: service(),
   gameSpots: computed('model.state', function () {
     return this.get('model.state').split(',');
-  }),
-  gameFinished: computed('model.winner', function () {
-    return this.get('model.winner');
   }),
   play(index) {
     const { me, model, gameSpots } = this.getProperties('me', 'model', 'gameSpots');

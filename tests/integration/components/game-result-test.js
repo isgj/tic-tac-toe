@@ -2,25 +2,52 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import Service from '@ember/service';
+import { computed } from '@ember/object';
 
-module('Integration | Component | game-result', function(hooks) {
+const Me = Service.extend({
+  data: computed(function () {
+    return { sub: 1, email: 'user1' };
+  })
+})
+module('Integration | Component | game-result', function (hooks) {
   setupRenderingTest(hooks);
+  hooks.beforeEach(function () {
+    this.owner.register('service:me', Me);
+  })
 
-  test('it renders', async function(assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  test('it shows your turn', async function (assert) {
+    this.set('game', {
+      host: { id: 1, email: 'user1' },
+      guest: { id: 2, email: 'user2' },
+      next_player: 1,
+    })
+    await render(hbs`<GameResult @game={{game}}/>`);
 
-    await render(hbs`{{game-result}}`);
+    assert.ok(this.element.textContent.trim().includes('Your turn'), 'shold show is your turn');
+  });
 
-    assert.equal(this.element.textContent.trim(), '');
+  test('it shows waiting for other player', async function (assert) {
+    this.set('game', {
+      host: { id: 1, email: 'user1' },
+      guest: { id: 2, email: 'user2' },
+      next_player: 2,
+    })
+    await render(hbs`<GameResult @game={{game}}/>`);
 
-    // Template block usage:
-    await render(hbs`
-      {{#game-result}}
-        template block text
-      {{/game-result}}
-    `);
+    assert.ok(this.element.textContent.trim().includes('Waiting user2'), 'should wait for other user');
+  });
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+  test('it shows finished result', async function (assert) {
+    this.set('game', {
+      host: { id: 1, email: 'user1' },
+      guest: { id: 2, email: 'user2' },
+      next_player: 2,
+      finished: true
+    })
+    await render(hbs`<GameResult @game={{game}}/>`);
+
+    assert.ok(this.element.textContent.trim().includes('Finished'), 'should show game is finished');
+    assert.ok(this.element.textContent.trim().includes('Result:'), 'should show the result');
   });
 });

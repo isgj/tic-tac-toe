@@ -4,7 +4,7 @@ module.exports = function (environment) {
   var ENV = {
     modulePrefix: 'tic-tac-toe',
     environment: environment,
-    baseURL: '/',
+    rootUrl: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
@@ -28,11 +28,14 @@ module.exports = function (environment) {
     // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     // ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.host = 'http://localhost:3000';
+    ENV['ember-cli-mirage'] = {
+      enabled: false
+    };
   }
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.baseURL = '/';
+    ENV.rootURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -40,10 +43,11 @@ module.exports = function (environment) {
     ENV.APP.LOG_VIEW_LOOKUPS = false;
 
     ENV.APP.rootElement = '#ember-testing';
+    ENV.APP.autoboot = false;
   }
 
   if (environment === 'production') {
-
+    // TODO: add production host
   }
 
   return ENV;
